@@ -1,4 +1,4 @@
-package chapter14.section2;
+package addition.section2;
 
 import java.awt.*;
 
@@ -33,10 +33,12 @@ public class TwoCounter extends Thread {
     }
 
     @Override
-    public synchronized void run() {
+    public void run() {
         while (true) {
-            t1.setText(Integer.toString(count1++));
-            t2.setText(Integer.toString(count2++));
+            synchronized (this) {
+                t1.setText(Integer.toString(count1++));
+                t2.setText(Integer.toString(count2++));
+            }
             try {
                 sleep(500);
             } catch (InterruptedException e) {
@@ -44,7 +46,7 @@ public class TwoCounter extends Thread {
         }
     }
 
-    public synchronized void synchTest() {
+    public void synchTest() {
         Sharing1.incrementAccess();
         if (count1 != count2) {
             l.setText("Unsynched");

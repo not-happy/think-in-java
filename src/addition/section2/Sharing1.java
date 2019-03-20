@@ -1,6 +1,4 @@
-package chapter14.section2;
-
-import javafx.scene.layout.Pane;
+package addition.section2;
 
 import java.applet.Applet;
 import java.awt.*;

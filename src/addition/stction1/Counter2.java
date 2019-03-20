@@ -1,4 +1,4 @@
-package chapter14.stction1;
+package addition.stction1;
 
 import java.applet.Applet;
 import java.awt.*;
@@ -11,15 +11,14 @@ import java.awt.event.WindowEvent;
  * @author xuyong
  * @since 2019-03-18 22:27
  **/
-public class Counter1 extends Applet {
+public class Counter2 extends Applet {
 
-    private int count = 0;
     private Button
             onOff = new Button("Toggle"),
             start = new Button("Start");
 
-    private TextField t = new TextField(10);
-    private boolean runFlag = true;
+    TextField t = new TextField(10);
+    private SeparateSubTask sp = null;
 
     @Override
     public void init() {
@@ -30,22 +29,9 @@ public class Counter1 extends Applet {
         add(onOff);
     }
 
-    public void go() {
-        while (true) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            if (runFlag) {
-                t.setText(Integer.toString(count++));
-            }
-        }
-    }
-
     public static void main(String[] args) {
-        Counter1 applet = new Counter1();
-        Frame aFrame = new Frame("Counter1");
+        Counter2 applet = new Counter2();
+        Frame aFrame = new Frame("Counter2");
 
         aFrame.addWindowListener(new WindowAdapter() {
             @Override
@@ -65,14 +51,18 @@ public class Counter1 extends Applet {
     class StartL implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            go();
+            if (sp == null) {
+                sp = new SeparateSubTask(Counter2.this);
+            }
         }
     }
 
     class OnOffL implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            runFlag = !runFlag;
+            if (sp != null) {
+                sp.invertFlag();
+            }
         }
     }
 
