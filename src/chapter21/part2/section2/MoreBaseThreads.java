@@ -1,4 +1,4 @@
-package chapter21.section2;
+package chapter21.part2.section2;
 
 /**
  * @author xuyong
