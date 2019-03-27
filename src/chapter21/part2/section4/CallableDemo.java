@@ -20,23 +20,43 @@ public class CallableDemo {
 
         @Override
         public String call() throws Exception {
+            Thread.sleep(id * 1000);
             return "result of TaskWithResult " + id;
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         ExecutorService exec = Executors.newCachedThreadPool();
         List<Future<String>> results = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             results.add(exec.submit(new TaskWithResult(i)));
         }
+//        for (Future<String> result : results) {
+//            try {
+//                System.out.println(result.get());
+//            } catch (InterruptedException | ExecutionException e) {
+//                e.printStackTrace();
+//                return;
+//            } finally {
+//                exec.shutdown();
+//            }
+//        }
+
         for (Future<String> result : results) {
+            while (!result.isDone()) {
+                System.out.println("wait...");
+                Thread.sleep(10);
+            }
             try {
                 System.out.println(result.get());
-            } catch (InterruptedException | ExecutionException e) {
+            } catch (ExecutionException e) {
                 e.printStackTrace();
+                return;
+            } finally {
+                exec.shutdown();
             }
         }
+
     }
 
 }
